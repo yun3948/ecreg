@@ -21,7 +21,7 @@ class CreateMemberLogTable extends Migration
             $table->string('message')->default('')->comment('日志詳情');
 
             $table->string('email')->nullable()->default('')->comment('郵箱');
-            $table->text('content')->nullable()->default('')->comment('内容详情');
+            $table->text('content')->nullable()->comment('内容详情');
             $table->timestamps();
         });
     }
