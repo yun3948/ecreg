@@ -1,7 +1,7 @@
 <x-guest-layout>
     <x-authentication-card>
         <x-slot name="logo">
-           <h2 class="text-3xl">會員登錄</h2>
+           <h2 class="text-3xl">會員登入</h2>
         </x-slot>
 
         <x-validation-errors class="mb-4" />

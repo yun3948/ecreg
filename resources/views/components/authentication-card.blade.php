@@ -1,4 +1,4 @@
-<div class="pt-20 pb-20 flex flex-col sm:justify-center items-center    bg-slate-50		">
+<div class="pt-20 pb-20 flex flex-col sm:justify-center items-center bg-white">
     <div>
         {{ $logo }}
     </div>
