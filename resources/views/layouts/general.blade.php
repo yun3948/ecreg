@@ -20,13 +20,7 @@
 </head>
 
 <body>
-
-
-    <div class="top container">
-        <p class="text-end mb-0">
-            <a href="/login" class="fs-6 text-reset">登入</a>
-        </p>
-    </div>
+ 
     <div class="text-center">
         <a href="http://www.edconvergence.org.hk/">
             <img src="/image/banner2.jpg" alt="" style="max-width: 100%;">

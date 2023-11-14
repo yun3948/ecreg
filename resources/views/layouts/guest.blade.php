@@ -20,11 +20,7 @@
 
     <body class="font-sans antialiased">
 
-        <div class="top container mx-auto max-w-screen-lg">
-            <p class="text-end mb-0">
-                <a href="/login" class="fs-6 text-reset">登入</a>
-            </p>
-        </div>
+     
         <div class="  container mx-auto max-w-screen-lg">
             <a href="http://www.edconvergence.org.hk/">
                 <img src="/image/banner2.jpg" alt="" style="max-width: 100%;" class="mx-auto">

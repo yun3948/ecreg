@@ -75,12 +75,8 @@
                 d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
         </symbol>
     </svg>
+ 
 
-    <div class="top container">
-        <p class="text-end mb-0"> 
-         <a href="/login" class="fs-6 text-reset">登入</a>        
-        </p>
-    </div>
     <div class="text-center">
 
         <a href="http://www.edconvergence.org.hk/"><img style="max-width: 100%;" src="image/banner2.jpg"
@@ -185,7 +181,11 @@
                 </div>
             </div>
 
-            <h2 class="display-4 text-center mb-4">比較不同類別的會員</h2>
+            <div class="text-center  fs-4 border border-primary rounded-pill py-3">
+             已經是教評會員？<a href="/login">按此登入</a>會員系統。
+            </div>
+
+            <h2 class="display-4 text-center mt-5 mb-4">比較不同類別的會員</h2>
 
             <div class="table-responsive">
                 <table class="table text-center">
