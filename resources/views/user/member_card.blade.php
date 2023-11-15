@@ -31,7 +31,7 @@
         <img class="img-fluid " src="{{ $member->card_img }}" alt="" />
         <form action="" method="post">
             @csrf
-            <button class="btn btn-primary mt-2 btn-lg" type="primary" id="btn">重新发送</button>
+            <button class="btn btn-primary mt-2 btn-lg" type="primary" id="btn">發送到郵箱</button>
         </form>
 
     </div>

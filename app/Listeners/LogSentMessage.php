@@ -41,6 +41,8 @@ class LogSentMessage
         $subject = $message->getSubject();
         $content = $message->getBody();
 
+    
+
         // 根据最后一条记录来确定会员
         $member = Member::where('email',$email)->where('status','>',0)->latest()->first();
 
@@ -57,7 +59,8 @@ class LogSentMessage
         MailLog::create([
             'mail'=>$email,
             'subject'=>$subject,
-            'content'=>$content
+            'content'=>''
+            // 'content'=>$content
         ]);
 
 

@@ -28,20 +28,20 @@
         <form action="" method="post" class="">
             @csrf
             <div class="form-group  ">
-                <label for="old_password">原始密碼</label>
+                <label for="old_password">原有密碼</label>
                 <input type="text" class="form-control" required value="" name="old_password" id="old_password"
-                    placeholder="原始密碼">
+                    placeholder="原有密碼">
             </div>
 
-            <div class="form-group pb-3">
+            <div class="form-group pb-3 mt-4">
                 <label for="password">新密碼</label>
                 <input type="text" class="form-control" required value="" name="password" id="password" placeholder="新密碼">
             </div>
 
-            <div class="form-group pb-3">
-                <label for="password_confirmation">確認密碼</label>
+            <div class="form-group pb-3 mt-4">
+                <label for="password_confirmation">確認新密碼</label>
                 <input type="text" class="form-control" required value="" name="password_confirmation"
-                    id="password_confirmation" placeholder="確認密碼">
+                    id="password_confirmation" placeholder="確認新密碼">
             </div>
 
             <div class="d-grid">
