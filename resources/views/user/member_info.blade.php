@@ -12,6 +12,18 @@
                 child.hide();
                 child.eq(index).show();
             });
+            
+          
+            //根据上次选择 自动修改对应的展示字段
+            function change_work(){
+                const job_type = {{$member->job_type}} 
+                const index = $('#work-info').find('input[name="workerinfo"]:checked').index('input[name="workerinfo"]');
+                    let child = $('#school-wraper').children();
+                child.hide();
+                child.eq(index).show();
+            }
+
+              change_work();
         })
     </script>
 @endsection
@@ -33,9 +45,13 @@
             </div>
         @endif
 
-
+       
         <form class="row g-4" action="" method="post" id="_form">
             @csrf
+             <div>
+            <h2>修改會員資料</h2>
+        </div>
+
             <div class="col-md-6">
                 <label for="chiname">中文姓名</label>
                 <input type="text" class="form-control" value="{{ $member->chiname }}" name="zh_name" id="chiname"

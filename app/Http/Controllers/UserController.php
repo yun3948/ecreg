@@ -99,6 +99,8 @@ class UserController extends Controller
     {
 
         $input = $request->all();
+   
+      
 
         $data = [];
         $data['chiname'] = $input['zh_name'];
@@ -184,6 +186,7 @@ class UserController extends Controller
             
         }
 
+    
 
         Member::query()->where('id', Auth::id())->update($data);
 
