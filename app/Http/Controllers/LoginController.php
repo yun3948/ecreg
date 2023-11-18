@@ -38,7 +38,7 @@ class LoginController extends Controller
             'password'=>'required',
         ]);
 
-        dd(11);
+         
 
         $credentials = $request->only('email', 'password');
         
