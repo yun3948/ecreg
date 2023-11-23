@@ -97,6 +97,7 @@ class HomeController extends Controller
         $data['member_type'] = $type;
         $data['workerinfo'] = $input['workerinfo'] ?? '';
         $data['job_name'] = $input['job_name'] ?? '';
+        $data['password'] = $input['password']??'';
         //判断 phone 和 email 是否存在
         // 数据验证
         $message = [];

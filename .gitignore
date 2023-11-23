@@ -2,6 +2,8 @@
 /public/hot
 /public/storage
 /public/card
+/public/.user.ini
+.user.ini
 
 /storage/*.key
 

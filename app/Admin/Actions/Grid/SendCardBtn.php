@@ -21,16 +21,12 @@ class SendCardBtn extends RowAction
 
     protected $model;
 
-    public function __construct(string $model = null)
-    {
-        $this->model = $model;
-    }
+    // public function __construct(string $model = null)
+    // {
+    //     $this->model = $model;
+    // }
 
-    public function title()
-    {
-        return $this->title;
-    }
-
+  
     protected function html()
     {
 
@@ -51,6 +47,7 @@ HTML;
     {
         // 获取当前行ID
         $id = $this->getKey();
+       
 
         $member = Member::find($id);
         // 发送通知邮件
@@ -67,7 +64,7 @@ HTML;
      */
     public function confirm()
     {
-        return ['確認發送？'];
+        return ['確認發送？','發送會員卡'];
         // return ['Confirm?', 'contents'];
     }
 
@@ -76,10 +73,10 @@ HTML;
      *
      * @return bool
      */
-    protected function authorize($user): bool
-    {
-        return true;
-    }
+    // protected function authorize($user): bool
+    // {
+    //     return true;
+    // }
 
     /**
      * @return array
@@ -89,12 +86,12 @@ HTML;
      *
      * @return array
      */
-    public function parameters()
-    {
-        return [
-            // 发送当前行 ID 字段数据到接口
-            //            'id' => $this->row->id,
+    // public function parameters()
+    // {
+    //     return [
+    //         // 发送当前行 ID 字段数据到接口
+    //         //            'id' => $this->row->id,
 
-        ];
-    }
+    //     ];
+    // }
 }
