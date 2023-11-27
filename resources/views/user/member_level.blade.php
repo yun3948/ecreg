@@ -14,7 +14,7 @@
 @section('content')
     <div class="m-auto" style="width:420px;">
 
-   
+
 
         @if (session('error'))
             <div class="alert alert-danger alert-dismissible">
@@ -40,14 +40,30 @@
                 <form action="" method="post" id="_form">
                     @csrf
                     <div class="d-grid gap-2 col-8 mx-auto">
-                        <a class="btn btn-primary" type="button" id="up">申請成為永久會員</a>
+                        <button id="up" type="button" class="btn btn-primary"
+                            @if ($is_check || $is_pass) disabled @endif>申請成為永久會員</button>
+
                     </div>
                 </form>
             </div>
 
             <div class="mt-2 text-center fs-6 fw-lighter">
-                提示：需成為資深會員兩年以後才可以申請成為永久會員。
+                @if (!$is_pass)
+                    <div>
+                        @if ($is_check)
+                            <p>您已提出申請，請耐心等待工作人員審批。</p>
+                            <p> 請把支票郵寄到：新界屯門田景邨中華基督教會蒙黃花沃紀念小學，鄭家寶校長收。</p>
+                            <p>支票抬頭：教育評議會</p>
+                            <p>金額：$900</p>
+                            <p> 支票背面請註明「教評申請永久會員及姓名」</p>
+                        @else
+                            提示：需成為資深會員兩年以後才可以申請成為永久會員。
+                        @endif
+                    </div>
+                @endif
             </div>
+
+
 
         </div>
     </div>

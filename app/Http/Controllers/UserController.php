@@ -21,6 +21,21 @@ class UserController extends Controller
 
     }
 
+    public function level(Request $request) {
+        $user_id = Auth::id();
+        $member = Member::find(Auth::id());
+        $log = MemberChangeLevel::where('user_id',$user_id)
+        // ->where('status',0)
+        ->orderByDesc('id')
+        ->first(); 
+        // 存在申請記錄 并且記錄狀態為 未審核 則 is_check = 1
+        return view('user.member_level',[
+            'member'=>$member,
+            'is_check'=> ($log && $log->status == 0)?1:0, // 等待审核
+            'is_pass'=> ( $member->type ==3 || ($log && $log->status == 1))?1:0 // 申请过并且通过
+        ]);
+    }
+
     //申請永久会员
     public function change_level(Request $request){
        
@@ -91,7 +106,7 @@ class UserController extends Controller
       
         Mail::to($request->user())->send(new UserSendMemberCard($user));
  
-        return redirect()->back()->with('message', '发送成功！'); 
+        return redirect()->back()->with('message', '電子會員證已發送，請登入郵箱查收。如沒有收到郵件，請檢查「垃圾郵件」並把本會發出的電郵設成「非垃圾郵件」'); 
     }
 
     // 保存修改信息
@@ -184,12 +199,10 @@ class UserController extends Controller
         // 判断邮箱是否修改  记录日志        
         if($user->email != $data['email']) {
             
-        }
-
-    
+        } 
 
         Member::query()->where('id', Auth::id())->update($data);
 
-        return redirect()->back()->with('message', '提交成功！');
+        return redirect()->back()->with('message', '資料更新成功。');
     }
 }

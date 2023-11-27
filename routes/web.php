@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\UserController;
 use App\Models\Member;
+use App\Models\MemberChangeLevel;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -79,11 +80,7 @@ Route::middleware([
 
     Route::post('/card', [UserController::class, 'send_card']);
 
-    Route::get('/level', function () {
-        return view('user.member_level', [
-            'member' => Member::find(Auth::id())
-        ]);
-    })->name('user.level');
+    Route::get('/level',[UserController::class, 'level'])->name('user.level');
 
 
     Route::post('/level', [UserController::class, 'change_level']);

@@ -17,7 +17,7 @@
                 <h5 class="card-title"> {{$item['title']}} </h5>
                 {{-- <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> --}}
                 <p class="card-text">{{$item['remark']}}</p>
-                <a href="{{$item->link}}" class="card-link">詳情</a>
+                <a href="{{$item->link}}" target="_blank" class="card-link">詳情</a>
               
             </div>
         

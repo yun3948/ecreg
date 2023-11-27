@@ -29,19 +29,19 @@
             @csrf
             <div class="form-group  ">
                 <label for="old_password">原有密碼</label>
-                <input type="text" class="form-control" required value="" name="old_password" id="old_password"
+                <input type="password" class="form-control" required value="" name="old_password" id="old_password"
                     placeholder="原有密碼">
             </div>
 
             <div class="form-group pb-3 mt-4">
-                <label for="password">新密碼</label>
-                <input type="text" class="form-control" required value="" name="password" id="password" placeholder="新密碼">
+                <label for="password">新密碼 (最少 8 個字元) </label>
+                <input type="password" class="form-control" required value="" name="password" id="password" placeholder="新密碼">
             </div>
 
             <div class="form-group pb-3 mt-4">
-                <label for="password_confirmation">確認新密碼</label>
-                <input type="text" class="form-control" required value="" name="password_confirmation"
-                    id="password_confirmation" placeholder="確認新密碼">
+                <label for="password_confirmation">確認新密碼(最少 8 個字元)</label>
+                <input type="password" class="form-control" required value="" name="password_confirmation"
+                    id="password_confirmation" placeholder="確認新密碼(最少 8 個字元)">
             </div>
 
             <div class="d-grid">
