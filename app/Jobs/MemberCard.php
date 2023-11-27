@@ -133,6 +133,7 @@ class MemberCard implements ShouldQueue
         // 生成一维码
         $barImg = DNS1D::getBarcodePNGPath($no_txt, 'C128', 5, 60);
         $barImg = public_path($barImg);
+        
         $barImg = Image::make($barImg)->resize(335, 95);
         $rect_img->insert($barImg, 'center');
 

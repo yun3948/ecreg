@@ -6,7 +6,7 @@
 .user.ini
 
 /storage/*.key
-
+/public/barcode
 .env
 .env.backup
 .phpunit.result.cache
