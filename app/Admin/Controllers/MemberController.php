@@ -273,7 +273,7 @@ class MemberController extends AdminController
             $form->column(6, function (Form $form) {
                 $form->text('chiname')->rules('required');
 
-                $form->text('phone')->rules("required|unique:members,phone,{$form->model()->id}");
+                $form->text('phone');//->rules("required|unique:members,phone,{$form->model()->id}");
 
                 $form->text('company');
 
@@ -290,7 +290,7 @@ class MemberController extends AdminController
 
                 $form->text('engname')->rules('required');;
 
-                $form->email('email')->rules("required|unique:members,phone,{$form->model()->id}");;
+                $form->email('email');//->rules("required|unique:members,email,{$form->model()->id}");;
 
                 $form->select('company_type')->options(admin_trans('member.options.company_type'));
 
