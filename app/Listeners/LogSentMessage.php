@@ -41,12 +41,18 @@ class LogSentMessage
         $subject = $message->getSubject();
         $content = $message->getBody();
 
-    
+       
 
         // 根据最后一条记录来确定会员
-        $member = Member::where('email',$email)->where('status','>',0)->latest()->first();
+        $member = Member::where('email',$email)
+        // ->where('status','>',0)
+        ->latest()->first();
 
-        $data = [];
+         if(!$member) {
+            return true;
+         }
+
+        $data = []; 
         $data = [
             'member_id'=>$member->id,
             'email'=>$email,
