@@ -323,10 +323,11 @@ class MemberController extends AdminController
             $form->saved(function(Form $form){
                 $member_id = $form->model()->id;
                 $member = \app\Models\Member::find($member_id);
+                 
                 // 需要重新生成會員卡
                 Bus::chain([
                     new MemberCard($member)
-                ]);
+                ])->dispatch();;
             });
         });
     }

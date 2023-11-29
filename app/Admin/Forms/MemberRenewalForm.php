@@ -39,7 +39,7 @@ class MemberRenewalForm extends Form  implements LazyRenderable
 
         Bus::chain([
             new MemberCard($member)
-        ]);
+        ])->dispatch();;
 
         return $this
             ->response()

@@ -32,6 +32,7 @@ class MemberCard implements ShouldQueue
      */
     public function __construct(Member $member)
     {
+       
         $this->member = $member;
     }
 
@@ -42,6 +43,7 @@ class MemberCard implements ShouldQueue
      */
     public function handle()
     {
+       
         $this->create_card();
     }
 
