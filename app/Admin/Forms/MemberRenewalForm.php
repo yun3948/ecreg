@@ -7,7 +7,8 @@ use App\Models\MemberLog;
 use Dcat\Admin\Widgets\Form;
 use Dcat\Admin\Traits\LazyWidget;
 use Dcat\Admin\Contracts\LazyRenderable;
-
+use App\Jobs\MemberCard;
+use Illuminate\Support\Facades\Bus;
 class MemberRenewalForm extends Form  implements LazyRenderable
 {
     use LazyWidget;
@@ -36,6 +37,9 @@ class MemberRenewalForm extends Form  implements LazyRenderable
         }
         MemberLog::level_log($id, $message, $remark);
 
+        Bus::chain([
+            new MemberCard($member)
+        ]);
 
         return $this
             ->response()

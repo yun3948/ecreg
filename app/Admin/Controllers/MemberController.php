@@ -16,6 +16,8 @@ use Dcat\Admin\Widgets\Tab;
 
 use App\Admin\Actions\Grid\MemberCheckBtn;
 use App\Admin\Actions\Grid\MemberRenewalBtn;
+use App\Jobs\MemberCard;
+use Illuminate\Support\Facades\Bus;
 
 class MemberController extends AdminController
 {
@@ -314,7 +316,17 @@ class MemberController extends AdminController
             $form->confirm('確認操作？');
 
             $form->saving(function (Form $form) {
+           
                 $form->deleteInput('status');
+            });
+
+            $form->saved(function(Form $form){
+                $member_id = $form->model()->id;
+                $member = \app\Models\Member::find($member_id);
+                // 需要重新生成會員卡
+                Bus::chain([
+                    new MemberCard($member)
+                ]);
             });
         });
     }
