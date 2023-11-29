@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // 每天下午 执行 判断会员是否需要续费 ，发送续费 会员卡邮件
-        // $schedule->command('member:last')->dailyAt('13:00');
+        $schedule->command('member:last')->dailyAt('12:00');
     }
 
     /**

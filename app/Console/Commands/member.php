@@ -104,12 +104,14 @@ class member extends Command
             });
     }
 
-    // 资深会员 发送续费提醒  // 如果满足条件 发送可续费永久的的邮件， 否则发送普通的续费邮件
+    // 资深会员 发送续费提醒 提前一個月 
+     // 如果满足条件 发送可续费永久的的邮件， 否则发送普通的续费邮件
     public function member_zishen()
     {
         //
+        $day = Carbon::now()->subDays(30);
         MemberModel::where()
-            ->where('member_expired_at',)
+            ->where('member_expired_at','<=',$day)
             ->where('member_type', 2)
             ->where('member_fee_status',0) // 發送后修改狀態 防止重複發送
             ->chunkById(100, function ($lists) { 
