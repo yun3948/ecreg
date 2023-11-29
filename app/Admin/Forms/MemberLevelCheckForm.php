@@ -39,18 +39,16 @@ class MemberLevelCheckForm extends Form  implements LazyRenderable
         $member = Member::find($log->user_id);
 
         if($input['status'] == 1) { 
-            $member->member_type = 3;
+            $member->member_type = $log->member_level ;
             $member->save();
 
-           $message = '管理通過永久會員申請';
-           $remark = '管理通過永久會員申請';
+           $message = '管理通過會員申請';
+           $remark = '管理通過會員申請';
             if(!empty($input['remark'])) {
                 $remark  = $input['remark'];
             }
             
-            MemberLog::level_log($member->id,$message,$remark);
- 
-
+            MemberLog::level_log($member->id,$message,$remark); 
         } 
 
         // 更新申請記錄

@@ -60,8 +60,8 @@ class MemberController extends AdminController
             if(request()->has('is_check')){
                 $grid->header(function(){
                     $tab = Tab::make();
-                    $tab->addLink('申請注冊',admin_route('member.check'),1);
-                    $tab->addLink('永久會員申請',admin_route('member.check_level'),0);
+                    $tab->addLink('會員注冊申請',admin_route('member.check'),1);
+                    $tab->addLink('會員升級申請',admin_route('member.check_level'),0);
                     return $tab;
                 });
             };

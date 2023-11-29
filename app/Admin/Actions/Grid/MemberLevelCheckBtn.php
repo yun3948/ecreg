@@ -25,7 +25,7 @@ class MemberLevelCheckBtn extends RowAction
 
         return Modal::make()
             ->lg()
-            ->title('永久會員審核')
+            ->title('會員升級審核')
             ->body($form)
             ->button("<i class='feather icon-user-check'></i>{$this->title}");
     }

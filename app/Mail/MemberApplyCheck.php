@@ -31,7 +31,7 @@ class MemberApplyCheck extends Mailable  implements ShouldQueue
     public function envelope()
     {
         return new Envelope(
-            subject: '永久會員審批',
+            subject: '會員審批',
         );
     }
 
@@ -42,14 +42,14 @@ class MemberApplyCheck extends Mailable  implements ShouldQueue
      */
     public function content()
     {
-      
-
+        $member_level = MEMBER_TYPE_ARR[$this->member->member_type];
         $card_img = asset($this->member->card_img);
         return new Content(
             markdown:'mail.admin_pass_member_apply',
             with:[
                 'username'=>$this->member->chiname,
-                'card_img'=>$card_img
+                'card_img'=>$card_img,
+                'member_level'=>$member_level
              ]
                
            

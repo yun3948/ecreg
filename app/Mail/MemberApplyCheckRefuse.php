@@ -33,7 +33,7 @@ class MemberApplyCheckRefuse extends Mailable  implements ShouldQueue
     public function envelope()
     {
         return new Envelope(
-            subject: '會員審批结果',
+            subject: '會員審批',
         );
     }
 
@@ -47,7 +47,8 @@ class MemberApplyCheckRefuse extends Mailable  implements ShouldQueue
         return new Content(
             markdown: 'mail.admin_refuse_member_apply',
             with: [
-                'username' => $this->member->chiname
+                'username' => $this->member->chiname,
+                'member'=>$this->member,
             ]
         );
     }

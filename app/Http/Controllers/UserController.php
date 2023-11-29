@@ -42,11 +42,7 @@ class UserController extends Controller
         //判斷是否存在申請
         $user_id = Auth::id();
 
-        $user = Auth::user(); 
-
-        $data = [];
-        $data['user_id'] = $user_id;
-
+        $user = Auth::user();  
       
         //判断是否存在未操作的记录
         $log = MemberChangeLevel::where('user_id',$user_id)->where('status',0)->first();
@@ -55,17 +51,27 @@ class UserController extends Controller
             return back()->with('error','已申請，等待審核中');
         }
 
+        $data = [];
+        $data['user_id'] = $user_id;
+        $data['email'] = $user->email;
+        $data['status'] = 0;
+        $data['member_type'] = MEMBER_TYPE_ARR[$user->member_type];
+        $data['status'] = 0;
+
+        if($user->member_type == 1) {
+            
+            $data['action_type'] = '申請資深會員';
+            $data['remark'] = '申請資深會員';
+            $data['member_level'] = 2;
+        }elseif($user->member_type ==2) {
+            $data['action_type'] = '申請永久會員';
+            $data['remark'] = '申請永久會員';
+            $data['member_level'] = 3;
+        }
+
+
         //插入记录
-        MemberChangeLevel::create([
-            'user_id'=>$user_id,
-            'email'=>$user->email,
-            'member_type'=>MEMBER_TYPE_ARR[$user->member_type],
-            'action_type'=>'永久會員',
-            'status'=>0,
-            'remark'=>'申请永久会员·'
-
-        ]);
-
+        MemberChangeLevel::create($data); 
 
         return back()->with('success','申請成功，等待管理員審核！');
         

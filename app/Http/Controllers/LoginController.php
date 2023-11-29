@@ -44,7 +44,7 @@ class LoginController extends Controller
         
         $email = $request->input('email');
         $password = $request->input('password');
-        
+        // 審核通過的用戶
         $user = Member::query()->where('email')->where('status',1)->first();
         if(empty($user)) {
 
