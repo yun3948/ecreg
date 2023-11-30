@@ -4,7 +4,7 @@
 /public/card
 /public/.user.ini
 .user.ini
-
+/public/storage*
 /storage/*.key
 /public/barcode
 .env

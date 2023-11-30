@@ -187,8 +187,7 @@ class MemberController extends AdminController
                 'job_type' => admin_trans_field('job_type'),
                 'company' => admin_trans_field('company'),
                 'job_name' => admin_trans_field('job_name'),
-                'company_type' => admin_trans_field('company_type'),
-
+                'company_type' => admin_trans_field('company_type'), 
                 'created_at' => admin_trans_field('created_at'),
             ];
 

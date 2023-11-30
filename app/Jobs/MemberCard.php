@@ -32,7 +32,7 @@ class MemberCard implements ShouldQueue
      */
     public function __construct(Member $member)
     {
-       
+
         $this->member = $member;
     }
 
@@ -43,7 +43,6 @@ class MemberCard implements ShouldQueue
      */
     public function handle()
     {
-       
         $this->create_card();
     }
 
@@ -51,7 +50,7 @@ class MemberCard implements ShouldQueue
     private function create_card()
     {
         $member = $this->member;
-//        $img = Image::canvas($canvas_width, $canvas_height, '#eeeeee');
+        //        $img = Image::canvas($canvas_width, $canvas_height, '#eeeeee');
         $card_type = match ($member->member_type) {
             1 => 'normal',
             2 => 'zishen',
@@ -91,9 +90,8 @@ class MemberCard implements ShouldQueue
             $font->file($font_file);
             $font->size(40);
             $font->color('#000000');
-//            $font->align('center');
+            //            $font->align('center');
             $font->valign('top');
-
         });
 
         $no_txt = $this->create_card_no($member);
@@ -102,9 +100,8 @@ class MemberCard implements ShouldQueue
             $font->file($font_file);
             $font->size(40);
             $font->color('#000000');
-//            $font->align('center');
+            //            $font->align('center');
             $font->valign('top');
-
         });
 
         //会员证类型  附屬會員證
@@ -114,17 +111,17 @@ class MemberCard implements ShouldQueue
             $font->file($font_file);
             $font->size(40);
             $font->color('#000000');
-//            $font->align('center');
+            //            $font->align('center');
             $font->valign('top');
         });
 
         $txt = "有效期至 : " . date('d-m-Y', strtotime($member->member_expired_at));
-          
+
         $img->text($txt, 60, 430, function ($font) use ($font_file) {
             $font->file($font_file);
             $font->size(40);
             $font->color('#000000');
-//            $font->align('center');
+            //            $font->align('center');
             $font->valign('top');
         });
 
@@ -135,7 +132,7 @@ class MemberCard implements ShouldQueue
         // 生成一维码
         $barImg = DNS1D::getBarcodePNGPath($no_txt, 'C128', 5, 60);
         $barImg = public_path($barImg);
-        
+
         $barImg = Image::make($barImg)->resize(335, 95);
         $rect_img->insert($barImg, 'center');
 
@@ -145,10 +142,11 @@ class MemberCard implements ShouldQueue
         // 路径
         $path = 'card/' . date('Y/m/') . md5($no_txt) . '.png';
         Storage::disk('public')->put($path, (string)$img->encode('png'));
-        $card_img = Storage::url($path);
+        $card_img = Storage::url($path).'?t='.time();
+        
 
         //更新 用户 card_img
-        if(empty($member->card_no_txt)) {
+        if (empty($member->card_no_txt)) {
             $member->card_no_txt = $no_txt;
         }
 
@@ -161,7 +159,7 @@ class MemberCard implements ShouldQueue
     private function create_card_no(Member $member)
     {
         // 编号存在 直接返回
-        if(!empty($member->card_no_txt)) {
+        if (!empty($member->card_no_txt)) {
             return $member->card_no_txt;
         }
 
@@ -169,7 +167,7 @@ class MemberCard implements ShouldQueue
         //获取比当前member  ID 小的数据数量
         $member_sort = Member::withTrashed()->where('id', '<', $member->id)->count();
 
-        $card_no = $card_no + $member_sort+3;
+        $card_no = $card_no + $member_sort + 3;
 
         $str = str_pad($card_no, 6, '0', STR_PAD_LEFT);
 
