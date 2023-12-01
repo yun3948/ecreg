@@ -81,18 +81,18 @@ class MemberLevelCheckForm extends Form  implements LazyRenderable
         // 展示信息  // 審核可以輸入備注
 
         $this->row(function($row){
-            $row->width(6)->display('member.chiname')->disable();
-            $row->width(6)->display('member.engname')->disable();
+            $row->width(6)->display('member.chiname','中文姓名')->disable();
+            $row->width(6)->display('member.engname','英文姓名')->disable();
 
-            $row->width(6)->display('member.phone')->disable();
-            $row->width(6)->display('member.email')->disable(); 
+            $row->width(6)->display('member.phone','電話')->disable();
+            $row->width(6)->display('member.email','電郵')->disable(); 
 
         });
 
         $this->row(function ($row) {
-            $row->width(12)->radio('status', '狀態')->options(admin_trans('member.options.status_check'))->rules('required');
+            $row->width(12)->radio('status', '審核操作')->options(admin_trans('member.options.status_check'))->rules('required');
       
-            $row->width(12)->textarea('remark','備注');
+            $row->width(12)->textarea('remark','備注')->placeholder('備註內容');
         });
 
     
