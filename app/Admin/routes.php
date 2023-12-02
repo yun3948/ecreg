@@ -21,7 +21,10 @@ Route::group([
             'index'=>'member_list',
             ]
     ]);
-
+    // 资深会员续期
+    $router->get('wait_pay_members','MemberController@pay_member_list')->name('member.pay');
+    
+    // 审核列表
     $router->get('check_member_list','MemberController@check_member_list')->name('member.check');
 
     $router->post('check_member','MemberController@check_member');
@@ -39,6 +42,8 @@ Route::group([
             'index'=>'member.check_level'
         ]
     ]);
+
+
 
     //等級變動日志
     $router->resource('member_change_level_log','MemberChangeLevelLogController');

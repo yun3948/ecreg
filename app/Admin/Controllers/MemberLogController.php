@@ -19,6 +19,7 @@ class MemberLogController extends AdminController
     {
         
         return Grid::make(new MemberLog(), function (Grid $grid) {
+            $grid->model()->orderBy('id', 'DESC');
             $grid->column('id')->sortable();
             $grid->column('member_id');
             $grid->column('email');

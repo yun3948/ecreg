@@ -39,7 +39,7 @@ class member extends Command
 
         // 查询距离过期30天的 会员
         $this->member_expire();
-        // $this->member_normal();
+        $this->member_normal();
         // $this->member_zishen();
 
         return Command::SUCCESS;
@@ -70,6 +70,8 @@ class member extends Command
         MemberModel::where('member_expired_at', '<=', $today)
             // ->where('member_type', '!=', 3)  // 非永久
             ->chunkById(100, function ($lists) {
+
+                    dd($lists);
 
                 foreach ($lists as $member) {
                     //资深  自动降级为普通  到期修改状态  需要 后台 提交
