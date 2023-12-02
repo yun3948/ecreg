@@ -15,6 +15,7 @@ class Member extends Model
     protected $guarded = [];
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'member_expired_at' => 'datetime',
     ];
 
     public function getEngnameAttribute($val){
