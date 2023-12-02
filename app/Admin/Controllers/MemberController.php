@@ -347,7 +347,7 @@ class MemberController extends AdminController
 
                 $form->display('created_at');
 
-                $form->display('updated_at');
+                $form->date('member_expired_at','到期時間');
             });
 
             $form->width(8, 4);
