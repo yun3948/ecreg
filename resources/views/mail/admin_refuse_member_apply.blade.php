@@ -1,17 +1,17 @@
 @component('mail::message')
 
-# 親愛的 {{ $username }}
+# 親愛的 {{ $username }} 
+ 
+@if ($member->member_type == 1)
+抱歉，您未能成功申請成為資深會員。
 
-@if ($member->type == 1)
-抱歉，您暫未符合資格成為教評資深會員。
-
-以下為申請成為教評永久會員的條件：
+以下為申請成為教評資深會員的條件：
 1. 繳交$150 教評會費
 2. 經執委會審定資格及通過    
     
 @endif
 
-@if ($member->type == 2)    
+@if ($member->member_type == 2)    
 抱歉，您暫未符合資格成為教評永久會員。
 
 以下為申請成為教評永久會員的條件：
