@@ -51,5 +51,5 @@ Route::group([
     //郵箱記錄
     $router->resource('mail_log','MailLogController');
  
-
+    $router->get('rules','HomeController@rule');
 });

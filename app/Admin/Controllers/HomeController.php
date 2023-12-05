@@ -11,6 +11,11 @@ use Dcat\Admin\Layout\Row;
 
 class HomeController extends Controller
 {
+
+    public function rule(Content $content) {
+        return $content->body(admin_view('admin.rules'));
+    }
+
     public function index(Content $content)
     {
         return $content
