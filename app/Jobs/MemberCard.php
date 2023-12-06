@@ -115,7 +115,12 @@ class MemberCard implements ShouldQueue
             $font->valign('top');
         });
 
-        $txt = "有效期至 : " . date('d-m-Y', strtotime($member->member_expired_at));
+        if($member->member_type == 3) {
+            $txt = "有效期至 : 永久生效" ;
+        }else{
+            $txt = "有效期至 : " . date('d-m-Y', strtotime($member->member_expired_at));
+        }
+       
 
         $img->text($txt, 60, 430, function ($font) use ($font_file) {
             $font->file($font_file);

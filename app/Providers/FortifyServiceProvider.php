@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -33,9 +34,17 @@ class FortifyServiceProvider extends ServiceProvider
         //登录
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('email', $request->email)->first();
-     
-            if ($user &&
-                Hash::check($request->password, $user->password)) {
+
+            if ($user && !$user->status) {
+                throw ValidationException::withMessages([
+                    'msg' => "用戶異常，等待审核！",
+                ]);
+            }
+
+            if (
+                $user &&
+                Hash::check($request->password, $user->password)
+            ) {
                 return $user;
             }
         });
@@ -46,7 +55,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });
