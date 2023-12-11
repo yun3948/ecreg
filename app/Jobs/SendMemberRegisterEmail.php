@@ -18,17 +18,13 @@ class SendMemberRegisterEmail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * The podcast instance.
-     *
-     * @var \App\Models\Podcast
-     */
+ 
     protected $member;
 
     /**
      * Create a new job instance.
      *
-     * @param  App\Models\Podcast  $podcast
+     *  
      * @return void
      */
     public function __construct(Member $member)
@@ -38,9 +34,11 @@ class SendMemberRegisterEmail implements ShouldQueue
 
 
     public function handle()
-    {
+    { 
         $member = $this->member;
-        Mail::to($member->email)->send(new MemberRegisterMail($member));
+        Mail::to($member->email)->send(
+            new MemberRegisterMail($this->member)
+        );
 
     }
 }

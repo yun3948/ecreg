@@ -31,7 +31,11 @@ Route::group([
 
 
     // 日志
-    $router->resource('member_log', 'MemberLogController');
+    $router->resource('member_log', 'MemberLogController',[
+        'names'=>[
+            'index'=>'member_log',
+            ]
+    ]);
 
     //新聞
     $router->resource('member_news', 'NewsController');
@@ -46,10 +50,12 @@ Route::group([
 
 
     //等級變動日志
-    $router->resource('member_change_level_log','MemberChangeLevelLogController');
+    // $router->resource('member_change_level_log','MemberChangeLevelLogController');
 
     //郵箱記錄
-    $router->resource('mail_log','MailLogController');
+    $router->get('mail_log','MemberLogController@mail_log');
+    $router->get('member_change_level_log','MemberLogController@level_log');
+    // $router->resource('mail_log','MailLogController');
  
     $router->get('rules','HomeController@rule');
 });

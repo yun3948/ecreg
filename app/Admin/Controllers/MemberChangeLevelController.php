@@ -16,6 +16,10 @@ class MemberChangeLevelController extends AdminController
      *
      * @return Grid
      */
+    protected function title(){
+        return '會員審核';
+    }
+
     protected function grid()
     {
         return Grid::make(new MemberChangeLevel('member'), function (Grid $grid) {
@@ -29,7 +33,7 @@ class MemberChangeLevelController extends AdminController
 
             $grid->header(function(){
                 $tab = Tab::make();
-                $tab->addLink('會員注冊申請',admin_route('member.check'), false );
+                $tab->addLink('會員註冊申請',admin_route('member.check'), false );
                 $tab->addLink('會員升級申請',admin_route('member.check_level'),true);
                 $tab->addLink('資深會員續期',admin_route('member.pay'),0);
 

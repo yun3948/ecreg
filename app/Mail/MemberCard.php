@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Member;
-class MemberCard extends Mailable
+class MemberCard extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -32,7 +32,10 @@ class MemberCard extends Mailable
 
         $card_img = asset($this->member->card_img);
         return $this->subject('教育評議會(電子會員證)')
-            ->markdown('mail.admin_send_card',['card_img'=>($card_img)]);
+            ->markdown('mail.admin_send_card',[
+                'card_img'=>($card_img),
+                'username' => $this->member->chiname,
+            ]);
 
     }
 }

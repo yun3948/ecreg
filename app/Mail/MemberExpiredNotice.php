@@ -52,7 +52,8 @@ class MemberExpiredNotice extends Mailable implements ShouldQueue
             markdown: 'mail.member_expired_notice',
             with: [
                 'url' => url('/'),
-                'yongjiu'=>$is_yongjiu
+                'yongjiu'=>$is_yongjiu,
+                'username' => $this->member->chiname,
             ]
         );
     }

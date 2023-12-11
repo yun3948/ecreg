@@ -34,7 +34,8 @@ class SendUpdateLink extends Mailable
         $link = 'http://ecreg.test/member/vertify';
         return $this->view('mail.send_member_update_link')
                     ->with([
-                        'link'=>$link
+                        'link'=>$link,
+                        'username' => $this->member->chiname
                     ]);
     }
 }

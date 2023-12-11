@@ -40,7 +40,7 @@ class MemberLog extends Model
 
     /// 邮件日志
     private function mail_log($member_id,$title,$message,$content) {
-
+        
         
     }
     

@@ -8,8 +8,40 @@ use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
 use Dcat\Admin\Http\Controllers\AdminController;
 
+use Dcat\Admin\Layout\Content;
 class MemberLogController extends AdminController
 {
+    protected $title = '會員記錄';
+
+    protected $type;
+    public function mail_log(Content $content)
+    {
+        $this->title = '電郵記錄';
+
+        $this->type = 'mail';
+        return $content
+        ->translation($this->translation())
+        ->title($this->title())
+        ->description($this->description()['index'] ?? trans('admin.list'))
+        ->body($this->grid());
+        // return redirect(admin_route('member_log', ['type' => 'mail']));
+
+          
+    }
+
+    public function level_log(Content $content)
+    {
+        $this->title = '會員等級變動記錄';
+
+        $this->type = 'level';
+        return $content
+        ->translation($this->translation())
+        ->title($this->title())
+        ->description($this->description()['index'] ?? trans('admin.list'))
+        ->body($this->grid());
+        // return redirect(admin_route('member_log', ['type' => 'level']));
+    }
+
     /**
      * Make a grid builder.
      *
@@ -17,9 +49,16 @@ class MemberLogController extends AdminController
      */
     protected function grid()
     {
-        
+      
+
         return Grid::make(new MemberLog(), function (Grid $grid) {
-            $grid->model()->orderBy('id', 'DESC');
+            $model = $grid->model();
+            $model->orderBy('id', 'DESC');
+
+            if(!empty($this->type)) {
+                $model->where('type',$this->type);
+            }
+
             $grid->column('id')->sortable();
             $grid->column('member_id');
             $grid->column('email');
@@ -27,10 +66,9 @@ class MemberLogController extends AdminController
             $grid->column('type');
             $grid->column('created_at');
             $grid->column('updated_at')->sortable();
-        
+
             $grid->filter(function (Grid\Filter $filter) {
                 $filter->equal('id');
-        
             });
         });
     }
@@ -68,7 +106,7 @@ class MemberLogController extends AdminController
             $form->text('email');
             $form->text('message');
             $form->text('type');
-        
+
             $form->display('created_at');
             $form->display('updated_at');
         });

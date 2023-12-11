@@ -82,6 +82,7 @@ class member extends Command
                         // 记录日志 降级
                         MemberLog::create([
                             'member_id' => $member->id,
+                            'email'=>$member->email,
                             'type' => 'level',
                             'message' => '會員過期自動降級'
                         ]);
@@ -91,12 +92,21 @@ class member extends Command
                     $member->member_expired_at = $member->member_expired_at->addDays(365);
                     $member->save();
 
-                    Bus::chain([
-                        //生成图片
-                        new MemberCard($member),
-                        //发送邮件
-                        new JobsMemberAutoRenewal($member)
-                    ])->dispatch();
+                    if ($member->member_type == 3) {
+                        // 永久会员重新生成会员卡  ，防止信息不更新
+                        Bus::chain([
+                            //生成图片
+                            new MemberCard($member),
+
+                        ])->dispatch();
+                    } else {
+                        Bus::chain([
+                            //生成图片
+                            new MemberCard($member),
+                            //发送邮件
+                            new JobsMemberAutoRenewal($member)
+                        ])->dispatch();
+                    }
                 }
             });
     }
@@ -113,7 +123,7 @@ class member extends Command
             ->where('member_fee_status', 0) // 發送后修改狀態 防止重複發送
             ->chunkById(100, function ($lists) {
 
-                foreach ($lists as $member) {                    
+                foreach ($lists as $member) {
                     //需要判断 有资格申请永久的会员 发送邮件不一致
                     // 发送过期提醒通知邮件
                     Mail::to($member)->send(new MemberExpiredNotice($member));

@@ -48,7 +48,8 @@ class MemberAutoRenewal extends Mailable implements ShouldQueue
         return new Content(
             markdown: 'mail.member_auto_renewal',
             with:[
-                'card_img'=>$card_img
+                'card_img'=>$card_img,
+                'username' => $this->member->chiname,
             ]
         );
     }

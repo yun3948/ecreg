@@ -34,7 +34,8 @@ class SendUpdateLink extends Mailable
 
         $link =  url('/member/info',['code'=>$this->member->vertify_code,'id'=>$this->member->id]);
         return $this->markdown('mail.send_link',[
-            'url'=>$link
+            'url'=>$link,
+            'username' => $this->member->chiname
         ]);
     }
 

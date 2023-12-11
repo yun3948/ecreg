@@ -61,6 +61,7 @@ class MemberApplyCheckRefuse extends Mailable  implements ShouldQueue
      */
     public function content()
     {
+      
         return new Content(
             markdown: 'mail.admin_refuse_member_apply',
             with: [

@@ -23,33 +23,19 @@ use Illuminate\Support\Facades\Bus;
 
 class MemberController extends AdminController
 {
+    protected $title = '會員管理'; 
+
+    protected function title() {
+         if(request()->has('wait_pay') || request()->has('is_check')) {
+               return '會員審核'; 
+         }
+ 
+         return $this->title;
+    }
 
     // 即将过期的资深会员
     protected function pay_member_list() 
     {
-
-        // $grid =  Grid::make(new Member(), function (Grid $grid) {
-        //     $grid->header(function(){
-        //         $tab = Tab::make();
-        //         $tab->addLink('會員注冊申請',admin_route('member.check'),0);
-        //         $tab->addLink('會員升級申請',admin_route('member.check_level'),0);
-        //         $tab->addLink('資深會員續期',admin_route('member.pay'),1);
-        //         return $tab;
-        //     });
-
-        //     $model = $grid->model()->orderBy('id', 'DESC');
-        //     $model->where('member_type', 2); 
-
-
-
-        // });
-
-        // return $content
-        // ->translation($this->translation())
-        // ->title('資深會員續期')
-        // ->description('資深會員續期列表')
-        // ->body($grid);
-
           return redirect(admin_route('member_list', ['wait_pay' => 1]));
     }
  
@@ -67,7 +53,7 @@ class MemberController extends AdminController
      */
     protected function grid()
     {
-        $this->title = '會員列表'; 
+        $this->title = '會員管理'; 
 
         $grid =  Grid::make(new Member(), function (Grid $grid) {
 
@@ -91,7 +77,7 @@ class MemberController extends AdminController
             if(request()->has('is_check') || request()->has('wait_pay')){
                 $grid->header(function(){
                     $tab = Tab::make();
-                    $tab->addLink('會員注冊申請',admin_route('member.check'),request()->has('is_check')?1:0);
+                    $tab->addLink('會員註冊申請',admin_route('member.check'),request()->has('is_check')?1:0);
                     $tab->addLink('會員升級申請',admin_route('member.check_level'),0);
                     $tab->addLink('資深會員續期',admin_route('member.pay'),request()->has('wait_pay')?1:0);
                     return $tab;
@@ -121,7 +107,7 @@ class MemberController extends AdminController
 
             // 资深会员等待续费
             if(request()->has('wait_pay')) {               
-                // 过期时间大于等于 30天前的
+                // 过期时间小于于等于 30天前的
                 $time = Carbon::now()->subDays(30);
                 $model->where('member_type',2)->where('member_expired_at','<=',$time);
                 

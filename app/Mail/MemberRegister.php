@@ -48,13 +48,15 @@ class MemberRegister extends Mailable
             'email_confirm', now()->addMinutes(60), ['user_id' => $this->member->id]
         );
         return $this->subject('請驗證電郵地址並確認註冊')
-            ->markdown('mail.member_email_confirm',['url'=>$url]);
+            ->markdown('mail.member_email_confirm',[
+                'url'=>$url,
+                'username' => $this->member->chiname
+            ]);
 
     }
 
     public function zishen(){
         return $this->subject('歡迎申請加入教育評議會')
-            ->markdown('mail.member_register_for_check');
-
+            ->markdown('mail.member_register_for_check',['username' => $this->member->chiname,]); 
     }
 }

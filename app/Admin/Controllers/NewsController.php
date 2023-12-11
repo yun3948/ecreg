@@ -10,6 +10,10 @@ use Dcat\Admin\Http\Controllers\AdminController;
 
 class NewsController extends AdminController
 {
+    protected function title() {
+        return '會員新聞';
+    }
+
     /**
      * Make a grid builder.
      *

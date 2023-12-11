@@ -52,6 +52,7 @@ class UserSendMemberCard extends Mailable implements ShouldQueue
              markdown:'mail.admin_send_card',
              with:[
                 'card_img'=>$card_img,
+                'username' => $this->member->chiname
              ]
         );
     }
