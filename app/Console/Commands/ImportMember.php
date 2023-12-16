@@ -21,7 +21,7 @@ class ImportMember extends Command
      *
      * @var string
      */
-    protected $signature = 'import:member';
+    protected $signature = 'import:member {file}';
 
     /**
      * The console command description.
@@ -36,9 +36,11 @@ class ImportMember extends Command
      * @return int
      */
     public function handle()
-    {
-
-        $file = '/mnt/d/member.csv';
+    { 
+        $file = $this->argument('file'); 
+        if(!file_exists($file)) {
+            dd('file error!');
+        }
         $fp = fopen($file, 'rb');
         $i = 0;
         while (($tmp = fgetcsv($fp)) !== false) {
@@ -46,6 +48,7 @@ class ImportMember extends Command
                 $i++;
                 continue;
             }
+            if(empty($tmp[0])) continue;
             //字段处理
             $data = [];
             $data['chiname'] = $tmp[0] ?: '';
