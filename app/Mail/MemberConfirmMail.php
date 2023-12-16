@@ -35,14 +35,14 @@ class MemberConfirmMail extends Mailable
 
         // 普通 附属
         if(in_array($this->member->member_type,[1,4])) {
-            return $this->subject('歡迎加入教育評議會(含電子會員證)')
-                ->markdown('mail.member_register_succ',
-                [
-                    'card_img'=>$card_img,
-                    'username' => $this->member->chiname,
-                ]);
+          
         }
-
+        return $this->subject('歡迎加入教育評議會(含電子會員證)')
+        ->markdown('mail.member_register_succ',
+        [
+            'card_img'=>$card_img,
+            'username' => $this->member->chiname,
+        ]);
 
     }
 }
