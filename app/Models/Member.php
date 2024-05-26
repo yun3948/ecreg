@@ -18,6 +18,10 @@ class Member extends Model
         'member_expired_at' => 'datetime',
     ];
 
+    public function expireInfo() {
+        return $this->hasOne(ExpireMember::class,'member_id','id');
+    }
+
     public function getEngnameAttribute($val){
         return strtoupper($val);
     }

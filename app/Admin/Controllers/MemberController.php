@@ -16,7 +16,10 @@ use Dcat\Admin\Widgets\Tab;
 
 use App\Admin\Actions\Grid\MemberCheckBtn;
 use App\Admin\Actions\Grid\MemberRenewalBtn;
+use App\Admin\Actions\Grid\RemoveExpireLogBtn;
+use App\Admin\Actions\Grid\SendExpireEmailBtn;
 use App\Jobs\MemberCard;
+use App\Models\ExpireMember;
 use Carbon\Carbon;
 use Dcat\Admin\Layout\Content;
 use Illuminate\Support\Facades\Bus;
@@ -106,10 +109,16 @@ class MemberController extends AdminController
             }
 
             // 资深会员等待续费
-            if(request()->has('wait_pay')) {               
+            if(request()->has('wait_pay')) {   
+                
+                //获取所有记录 id   包括已过期 转为 普通会员的 会员
+                $member_idx = ExpireMember::all()->pluck('member_id');
+                $model->whereIn('id',$member_idx);
+
+                // dd($member_idx);
                 // 过期时间小于于等于 30天前的
-                $time = Carbon::now()->subDays(30);
-                $model->where('member_type',2)->where('member_expired_at','<=',$time);
+                // $time = Carbon::now()->subDays(30);
+                // $model->where('member_type',2)->where('member_expired_at','<=',$time);
                 
             }
 
@@ -148,23 +157,24 @@ class MemberController extends AdminController
                     $grid->disableViewButton();                    
                     $grid->actions([
                         // new SendCardBtn(),
-                        new MemberRenewalBtn() 
+                        new MemberRenewalBtn(),
+                     
+                        new SendExpireEmailBtn(),
+
+                        new RemoveExpireLogBtn(),
                     ]);         
                 }
 
             }
 
-
-           
-
-
-
+ 
 
             $grid->column('id')->sortable();
             $grid->column('chiname');
             $grid->column('engname');
             $grid->column('phone');
             $grid->column('email');
+
             $grid->column('member_type')->display(function () {
                 return admin_trans_option($this->member_type, 'member_type');
                 //                return MEMBER_TYPE_ARR[$this->member_type];
@@ -177,20 +187,28 @@ class MemberController extends AdminController
             $grid->column('job_name');
             //            $grid->column('company_type');
             //            $grid->column('recommender');
-            $grid->column('status')->display(function () {
-                return admin_trans_option($this->status, 'status');
-            });
+        
 
-            $grid->column('card_img')->image('/', 60, 60);
+            // $grid->column('card_img')->image('/', 60, 60);
 
             if(!request()->has('is_check')) {
-                $grid->column('member_expired_at','到期時間')->sortable();;
+
+                $grid->column('member_expired_at','到期時間')->display(function(){
+                 
+                    return $this->expireInfo?$this->expireInfo->member_expired_at:$this->member_expired_at;
+                })->sortable();
+
             }else{
-                $grid->column('created_at')->sortable();;
+
+                $grid->column('status')->display(function () {
+                    return admin_trans_option($this->status, 'status');
+                });
+                $grid->column('created_at')->sortable();
+
+
             }
          
-            
-            //            $grid->column('updated_at')->sortable();
+    
 
             $grid->filter(function (Grid\Filter $filter) {
                 $filter->panel();

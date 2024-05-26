@@ -11,6 +11,7 @@ use Dcat\Admin\Traits\LazyWidget;
 use App\Models\Member;
 use App\Models\MemberChangeLevel;
 use App\Models\MemberLog;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Mail;
 
@@ -39,6 +40,10 @@ class MemberLevelCheckForm extends Form  implements LazyRenderable
         $member = Member::find($log->user_id);
 
         if($input['status'] == 1) { 
+            // 修改会员过期时间 默认为审核时间 增加 365 天
+            // $member->member_expired_at = Carbon::now()->addDays(365);
+            $member->member_expired_at = $input['expired_at'];
+
             $member->member_type = $log->member_level ;
             $member->save();
 
@@ -87,10 +92,12 @@ class MemberLevelCheckForm extends Form  implements LazyRenderable
             $row->width(6)->display('member.phone','電話')->disable();
             $row->width(6)->display('member.email','電郵')->disable(); 
 
+           
         });
 
         $this->row(function ($row) {
-            $row->width(12)->radio('status', '審核操作')->options(admin_trans('member.options.status_check'))->rules('required');
+            $row->width(6)->datetime('expired_at','会员過期時間')->default(Carbon::today()->addDays(365));
+            $row->width(6)->radio('status', '審核操作')->options(admin_trans('member.options.status_check'))->rules('required');
       
             $row->width(12)->textarea('remark','備注')->placeholder('備註內容');
         });

@@ -43,7 +43,7 @@ class MemberCheck extends Mailable
         } elseif ($this->member->status == 2) {
             // 拒绝  註冊教評資深會員
             return $this->subject('註冊教評資深會員')
-            ->markdown('mail.member_check_succ', [              
+            ->markdown('mail.member_check_fail', [              
                 'member'=>$this->member,
                 'username' => $this->member->chiname,
             ]);
