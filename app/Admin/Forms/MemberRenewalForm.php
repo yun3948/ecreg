@@ -8,7 +8,9 @@ use Dcat\Admin\Widgets\Form;
 use Dcat\Admin\Traits\LazyWidget;
 use Dcat\Admin\Contracts\LazyRenderable;
 use App\Jobs\MemberCard;
+use App\Jobs\SendMemberRenewalCheckEmail;
 use App\Logic\MemberLogic;
+use App\Mail\MemberRenewalCheck;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Bus;
 
@@ -25,6 +27,8 @@ class MemberRenewalForm extends Form  implements LazyRenderable
     public function handle(array $input)
     {
         $id = $this->payload['id'] ?? null;
+
+ 
 
         //更新  字段 
         $member = Member::find($id);
@@ -43,9 +47,16 @@ class MemberRenewalForm extends Form  implements LazyRenderable
         // 会员续费生效，移除 记录
         (new MemberLogic())->member_efect($id);
 
-        Bus::chain([
-            new MemberCard($member)
-        ])->dispatch();;
+        // 发送 成功续费提醒
+        $chain = [
+            new MemberCard($member)            
+        ];
+
+        if(!empty($input['send_mail'])) {
+            array_push($chain,new SendMemberRenewalCheckEmail($member));
+        }
+
+        Bus::chain($chain)->dispatch();;
 
         return $this
             ->response()
@@ -68,6 +79,9 @@ class MemberRenewalForm extends Form  implements LazyRenderable
         //过期时间 从当前的过期时间往后 365 
         $this->datetime('member_expired_at', '過期時間');
         $this->textarea('remark', '備注');
+        $this->checkbox('send_mail','通知')->options([
+            '1'=>'發電郵通知續會成功'
+        ]);
     }
 
     /**
@@ -85,6 +99,8 @@ class MemberRenewalForm extends Form  implements LazyRenderable
         $member->member_expired_at = $member->member_expired_at->addDays(365);
 
         $data = $member->toArray();
+
+        $data['send_mail'] = '1';
         return $data;
     }
 }
