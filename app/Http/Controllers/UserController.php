@@ -6,6 +6,7 @@ use App\Mail\UserSendMemberCard;
 use App\Models\Member;
 use App\Models\MemberChangeLevel;
 use App\Models\News;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -28,11 +29,26 @@ class UserController extends Controller
         // ->where('status',0)
         ->orderByDesc('id')
         ->first(); 
+
+        //是否显示即将过期信息
+        $is_expire_notice = false;
+       
+        if($member->member_type == 2) {
+
+ 
+            //资深会员 并且临近过期 30 天
+            if($member->member_expired_at >= Carbon::now() && $member->member_expired_at <= Carbon::now()->addDays(30)) {
+                $is_expire_notice = true;
+            }
+
+        }
+        
         // 存在申請記錄 并且記錄狀態為 未審核 則 is_check = 1
         return view('user.member_level',[
             'member'=>$member,
             'is_check'=> ($log && $log->status == 0)?1:0, // 等待审核
-            'is_pass'=> ( $member->type ==3 || ($log && $log->status == 1))?1:0 // 申请过并且通过
+            'is_pass'=> ( $member->member_type == 3 || ($log && $log->status == 1))?1:0 ,// 申请过并且通过
+            'is_expire_notice'=> $is_expire_notice , //是否显示即将过期信息
         ]);
     }
 

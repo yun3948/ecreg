@@ -54,6 +54,7 @@ class MemberExpiredNotice extends Mailable implements ShouldQueue
                 'url' => url('/'),
                 'yongjiu'=>$is_yongjiu,
                 'username' => $this->member->chiname,
+                'expire_date'=> $this->member->member_expired_at->format('Y年m月d日') ,
             ]
         );
     }
