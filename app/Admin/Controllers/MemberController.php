@@ -189,7 +189,7 @@ class MemberController extends AdminController
             //            $grid->column('recommender');
         
 
-            // $grid->column('card_img')->image('/', 60, 60);
+            $grid->column('card_img')->image('/', 60, 60);
 
             if(!request()->has('is_check')) {
 
