@@ -33,7 +33,7 @@ class MemberRenewalCheck extends Mailable implements ShouldQueue
     public function envelope()
     {
         return new Envelope(
-            subject: '教育評議會(會席續期成功)',
+            subject: '教育評議會(會籍續期成功)',
         );
     }
 
