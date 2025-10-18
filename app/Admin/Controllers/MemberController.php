@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Actions\Grid\SendCardBtn;
+use App\Admin\Metrics\Examples\ProductOrders;
 use App\Admin\Repositories\Member;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
@@ -26,28 +27,28 @@ use Illuminate\Support\Facades\Bus;
 
 class MemberController extends AdminController
 {
-    protected $title = '會員管理'; 
+    protected $title = '會員管理';
 
     protected function title() {
          if(request()->has('wait_pay') || request()->has('is_check')) {
-               return '會員審核'; 
+               return '會員審核';
          }
- 
+
          return $this->title;
     }
 
     // 即将过期的资深会员
-    protected function pay_member_list() 
+    protected function pay_member_list()
     {
           return redirect(admin_route('member_list', ['wait_pay' => 1]));
     }
- 
+
     //待审核会员列表
     protected function check_member_list()
     {
         return redirect(admin_route('member_list', ['is_check' => 1]));
     }
- 
+
 
     /**
      * Make a grid builder.
@@ -56,11 +57,11 @@ class MemberController extends AdminController
      */
     protected function grid()
     {
-        $this->title = '會員管理'; 
+        $this->title = '會員管理';
 
         $grid =  Grid::make(new Member(), function (Grid $grid) {
 
-            $member_type = request()->input('member_type'); 
+            $member_type = request()->input('member_type');
 
             //设置header
             if (request()->has('member_type')) {
@@ -109,8 +110,8 @@ class MemberController extends AdminController
             }
 
             // 资深会员等待续费
-            if(request()->has('wait_pay')) {   
-                
+            if(request()->has('wait_pay')) {
+
                 //获取所有记录 id   包括已过期 转为 普通会员的 会员
                 $member_idx = ExpireMember::all()->pluck('member_id');
                 $model->whereIn('id',$member_idx);
@@ -119,7 +120,7 @@ class MemberController extends AdminController
                 // 过期时间小于于等于 30天前的
                 // $time = Carbon::now()->subDays(30);
                 // $model->where('member_type',2)->where('member_expired_at','<=',$time);
-                
+
             }
 
             //默认 参数 status
@@ -145,29 +146,29 @@ class MemberController extends AdminController
                 $grid->disableViewButton();
                 $grid->actions([new MemberCheckBtn()]);
             }else {
-              
+
                 $grid->disableDeleteButton();
                 if(!request()->has('wait_pay')) {
-                    $grid->showQuickEditButton(); 
+                    $grid->showQuickEditButton();
                     $grid->actions([
                         new SendCardBtn(),
-                        new MemberRenewalBtn() 
+                        new MemberRenewalBtn()
                     ]);
                 }else{
-                    $grid->disableViewButton();                    
+                    $grid->disableViewButton();
                     $grid->actions([
                         // new SendCardBtn(),
                         new MemberRenewalBtn(),
-                     
+
                         new SendExpireEmailBtn(),
 
                         new RemoveExpireLogBtn(),
-                    ]);         
+                    ]);
                 }
 
             }
 
- 
+
 
             $grid->column('id')->sortable();
             $grid->column('chiname');
@@ -187,28 +188,43 @@ class MemberController extends AdminController
             $grid->column('job_name');
             //            $grid->column('company_type');
             //            $grid->column('recommender');
-        
+
 
             $grid->column('card_img')->image('/', 60, 60);
 
-            if(!request()->has('is_check')) {
-
-                $grid->column('member_expired_at','到期時間')->display(function(){
-                 
-                    return $this->expireInfo?$this->expireInfo->member_expired_at:$this->member_expired_at;
-                })->sortable();
-
-            }else{
-
+            // 审核会员显示创建时间
+            if(request()->has('is_check'))
+            {
                 $grid->column('status')->display(function () {
                     return admin_trans_option($this->status, 'status');
                 });
+
                 $grid->column('created_at')->sortable();
-
-
             }
-         
-    
+
+            if(request()->has('member_type') || request()->has('wait_pay'))
+            {
+                $grid->column('member_expired_at','到期時間')->display(function(){
+
+                    if($this->expireInfo)
+                    {
+                        $this->expireInfo->member_expired_at;
+                    }else{
+                        if($this->member_type == 3)
+                        {
+                            return '永久生效';
+                        }
+
+                        return $this->member_expired_at;
+                    }
+
+//                    return $this->expireInfo?$this->expireInfo->member_expired_at:$this->member_expired_at;
+                })->sortable();
+            }
+
+
+
+
 
             $grid->filter(function (Grid\Filter $filter) {
                 $filter->panel();
@@ -236,7 +252,7 @@ class MemberController extends AdminController
                 'job_type' => admin_trans_field('job_type'),
                 'company' => admin_trans_field('company'),
                 'job_name' => admin_trans_field('job_name'),
-                'company_type' => admin_trans_field('company_type'), 
+                'company_type' => admin_trans_field('company_type'),
                 'created_at' => admin_trans_field('created_at'),
             ];
 
@@ -349,33 +365,56 @@ class MemberController extends AdminController
 
                 $form->select('status')->options(admin_trans('member.options.status'))->disable();
 
+
                 $form->display('created_at');
 
-                $form->date('member_expired_at','到期時間');
+                if(  $form->model()->member_type == 3)
+                {
+
+                    $form->text('member_expired_at')->customFormat(function(){
+                        return '永久生效';
+                    });
+
+                }else{
+                    $form->date('member_expired_at','到期時間');
+                }
+
+
             });
 
             $form->width(8, 4);
 
             //            $form->ignore(['status']);
 
-          
+
 
             // 需要判断是否重复
             $form->confirm('確認操作？');
 
             $form->saving(function (Form $form) {
-           
+
+                if($form->member_type == 3)
+                {
+                    $form->member_expired_at = strtotime('2099-12-31');
+                }
+
+
                 $form->deleteInput('status');
             });
 
             $form->saved(function(Form $form){
+
                 $member_id = $form->model()->id;
                 $member = \app\Models\Member::find($member_id);
-                 
-                // 需要重新生成會員卡
-                Bus::chain([
-                    new MemberCard($member)
-                ])->dispatch();;
+
+
+//                // 需要重新生成會員卡
+//                Bus::chain([
+//                    new MemberCard($member)
+//                ])->dispatch();
+
+
+
             });
         });
     }

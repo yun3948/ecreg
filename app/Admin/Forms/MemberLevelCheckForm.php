@@ -39,12 +39,19 @@ class MemberLevelCheckForm extends Form  implements LazyRenderable
         //通過審核 修改會員等級
         $member = Member::find($log->user_id);
 
-        if($input['status'] == 1) { 
+        if($input['status'] == 1) {
             // 修改会员过期时间 默认为审核时间 增加 365 天
             // $member->member_expired_at = Carbon::now()->addDays(365);
             $member->member_expired_at = $input['expired_at'];
 
+
             $member->member_type = $log->member_level ;
+
+            if($member->member_type == 3)
+            {
+                $member->member_expired_at = '2099-12-31';
+            }
+
             $member->save();
 
            $message = '管理通過會員申請';
@@ -52,26 +59,26 @@ class MemberLevelCheckForm extends Form  implements LazyRenderable
             if(!empty($input['remark'])) {
                 $remark  = $input['remark'];
             }
-            
-            MemberLog::level_log($member->id,$message,$remark); 
-        } 
+
+            MemberLog::level_log($member->id,$message,$remark);
+        }
 
         // 更新申請記錄
         $log->status = $input['status'];
         $log->save();
 
-        // 通过 
+        // 通过
         if($input['status'] == 1) {
             Bus::chain([
                 new MemberCard($member),
                 new MemberApplyCheck($member),
             ])->dispatch();
         }
-        // 拒绝  
+        // 拒绝
         if($input['status'] == 2) {
             Mail::to($member->email)->send(new MemberApplyCheckRefuse($member));
         }
- 
+
         return $this
             ->response()
             ->success('審核完成！')
@@ -90,20 +97,20 @@ class MemberLevelCheckForm extends Form  implements LazyRenderable
             $row->width(6)->display('member.engname','英文姓名')->disable();
 
             $row->width(6)->display('member.phone','電話')->disable();
-            $row->width(6)->display('member.email','電郵')->disable(); 
+            $row->width(6)->display('member.email','電郵')->disable();
 
-           
+
         });
 
         $this->row(function ($row) {
             $row->width(6)->datetime('expired_at','会员過期時間')->default(Carbon::today()->addDays(365));
             $row->width(6)->radio('status', '審核操作')->options(admin_trans('member.options.status_check'))->rules('required');
-      
+
             $row->width(12)->textarea('remark','備注')->placeholder('備註內容');
         });
 
-    
-        
+
+
     }
 
     /**
@@ -120,4 +127,4 @@ class MemberLevelCheckForm extends Form  implements LazyRenderable
         return  compact('log','member');
 
     }
-}   
+}

@@ -51,7 +51,8 @@ class member extends Command
     public function member_expire()
     {
 
-        MemberModel::whereNull('member_expired_at')->chunkById(100, function ($lists) {
+        MemberModel::whereNull('member_expired_at')
+            ->chunkById(100, function ($lists) {
 
             foreach ($lists as $item) {
 
@@ -71,7 +72,7 @@ class member extends Command
         $today = Carbon::now();
         MemberModel::where('member_expired_at', '<', $today)
             ->where('status', 1)
-            // ->where('member_type', '!=', 3)  // 非永久
+             ->where('member_type', '!=', 3)  // 非永久会员 防止永久会员接收邮件
             ->chunkById(100, function ($lists) {
 
                 foreach ($lists as $member) {
@@ -116,14 +117,14 @@ class member extends Command
             });
     }
 
-    // 资深会员 发送续费提醒 提前一個月 
+    // 资深会员 发送续费提醒 提前一個月
     // 如果满足条件 发送可续费永久的的邮件， 否则发送普通的续费邮件
     public function member_zishen()
     {
         //
         $day = Carbon::now()->addDays(30);
         MemberModel::query()
-            ->where('member_expired_at', '<=', $day)          
+            ->where('member_expired_at', '<=', $day)
             ->where('member_type', 2)// 类型
             ->where('member_fee_status', 0) // 發送后修改狀態 防止重複發送
             ->where('status', 1)// 状态

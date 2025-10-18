@@ -18,3 +18,5 @@ yarn-error.log
 /.idea
 /.vscode
 .user.ini
+/404.html
+/index.html

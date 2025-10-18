@@ -20,7 +20,8 @@ return [
         'created_at'=> '申請時間',
         'updated_at'=> '更新時間',
         'card_no_txt'=>'編號',
-        'actions'=>''
+        'actions'=>'',
+        'member_expired_at'=>'到期時間',
     ],
     'options'=>[
         'status_check'=>[

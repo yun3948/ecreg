@@ -34,15 +34,17 @@ class MemeberCheck extends Form implements LazyRenderable
         $user->status = $input['status'];
         $user->save();
 
-        
+
         if($input['status'] == 1) {
-          
+
+
+
         }else{
             // 发送失败邮件
         }
         // 触发事件  发送邮件通知
         event(new MemberCheck($user));
-        
+
 
 
         return $this
@@ -86,7 +88,7 @@ class MemeberCheck extends Form implements LazyRenderable
         $this->row(function ($row) {
             $row->width(12)->radio('status', '狀態')->options(admin_trans('member.options.status_check'))->rules('required');
         });
-        
+
     }
 
     /**
