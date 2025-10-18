@@ -210,13 +210,15 @@ class MemberController extends AdminController
                     {
                         $this->expireInfo->member_expired_at;
                     }else{
-                        if($this->member_type == 3)
-                        {
-                            return '永久生效';
-                        }
 
-                        return $this->member_expired_at;
                     }
+
+                    if($this->member_type == 3)
+                    {
+                        return '永久生效';
+                    }
+
+                    return $this->member_expired_at;
 
 //                    return $this->expireInfo?$this->expireInfo->member_expired_at:$this->member_expired_at;
                 })->sortable();
