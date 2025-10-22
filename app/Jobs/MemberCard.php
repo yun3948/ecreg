@@ -120,7 +120,7 @@ class MemberCard implements ShouldQueue
         }else{
             $txt = "有效期至 : " . date('d-m-Y', strtotime($member->member_expired_at));
         }
-       
+
 
         $img->text($txt, 60, 430, function ($font) use ($font_file) {
             $font->file($font_file);
@@ -145,10 +145,10 @@ class MemberCard implements ShouldQueue
         $img->insert($rect_img, 'bottom-right', 30, 30);
 
         // 路径
-        $path = 'card/' . date('Y/m/') . md5($no_txt) . '.png';
+        $path = 'card/' . date('Y/m/') . md5($no_txt.'_'.$member->id) . '.png';
         Storage::disk('public')->put($path, (string)$img->encode('png'));
         $card_img = Storage::url($path).'?t='.time();
-        
+
 
         //更新 用户 card_img
         if (empty($member->card_no_txt)) {
