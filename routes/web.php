@@ -23,6 +23,7 @@ Route::get('/', function () {
     return redirect('/register');
 });
 
+Route::get('/test/test',[\App\Http\Controllers\TestController::class,'test']);
 
 // 会员申请
 Route::prefix('/register')->group(function () {
@@ -85,7 +86,7 @@ Route::middleware([
 
     Route::post('/level', [UserController::class, 'change_level']);
 
-    // Route::get('/news',function(){      
+    // Route::get('/news',function(){
     //     return view('user.member_news',[
     //         'member'=>Auth::user()
     //     ]);
