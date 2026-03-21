@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "525d782abf58da797132be57ca271573",
+    "content-hash": "7afb4f12ddf60c2cb41ed49721306260",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -282,6 +282,67 @@
                 "map"
             ],
             "time": "2023-08-25T16:18:39+00:00"
+        },
+        {
+            "name": "dcat-admin/operation-log",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dcat-admin/operation-log.git",
+                "reference": "c977d4ecf1ee6f60ea77c00b95c1fe9957fad478"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dcat-admin/operation-log/zipball/c977d4ecf1ee6f60ea77c00b95c1fe9957fad478",
+                "reference": "c977d4ecf1ee6f60ea77c00b95c1fe9957fad478",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "dcat/laravel-admin": "~2.0",
+                "php": ">=7.1.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Dcat\\Admin\\OperationLog\\OperationLogServiceProvider"
+                    ]
+                },
+                "dcat-admin": "Dcat\\Admin\\OperationLog\\OperationLogServiceProvider"
+            },
+            "autoload": {
+                "psr-4": {
+                    "Dcat\\Admin\\OperationLog\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jiangqh",
+                    "email": "841324345@qq.com"
+                }
+            ],
+            "description": "Dcat Admin 操作日志扩展",
+            "homepage": "https://github.com/dcat-admin/operation-log",
+            "keywords": [
+                "dcat-admin",
+                "extension"
+            ],
+            "support": {
+                "issues": "https://github.com/dcat-admin/operation-log/issues",
+                "source": "https://github.com/dcat-admin/operation-log/tree/master"
+            },
+            "time": "2021-02-05T03:42:07+00:00"
         },
         {
             "name": "dcat/easy-excel",

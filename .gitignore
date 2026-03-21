@@ -20,3 +20,4 @@ yarn-error.log
 .user.ini
 /404.html
 /index.html
+/vendor/*

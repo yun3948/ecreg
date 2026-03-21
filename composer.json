@@ -7,6 +7,7 @@
     "require": {
         "php": "^7.3|^8.0",
         "celaraze/dcat-extension-plus": "dev-master",
+        "dcat-admin/operation-log": "dev-master",
         "dcat/easy-excel": "^1.1",
         "dcat/laravel-admin": "2.*",
         "fruitcake/laravel-cors": "^2.0",
