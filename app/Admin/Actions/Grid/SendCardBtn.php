@@ -17,11 +17,11 @@ class SendCardBtn extends RowAction
     /**
      * @return string
      */
-    protected $title = '發送會員卡';
+    protected $title = '發送會員證';
     
     public function title(){
         return <<<HTML
-        <i class="fa fa-credit-card-alt">{$this->title}</i>
+        <i class="fa fa-envelope-o">{$this->title}</i>
 HTML;
  
     }

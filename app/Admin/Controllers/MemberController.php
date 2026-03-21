@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Actions\Grid\SendCardBtn;
+use App\Admin\Actions\Grid\RCreateCardBtn;
 use App\Admin\Metrics\Examples\ProductOrders;
 use App\Admin\Repositories\Member;
 use Dcat\Admin\Form;
@@ -151,14 +152,15 @@ class MemberController extends AdminController
                 if(!request()->has('wait_pay')) {
                     $grid->showQuickEditButton();
                     $grid->actions([
+                        new RCreateCardBtn(),
                         new SendCardBtn(),
-                        new MemberRenewalBtn()
+                        // new MemberRenewalBtn()
                     ]);
                 }else{
                     $grid->disableViewButton();
                     $grid->actions([
                         // new SendCardBtn(),
-                        new MemberRenewalBtn(),
+                        // new MemberRenewalBtn(),
 
                         new SendExpireEmailBtn(),
 
