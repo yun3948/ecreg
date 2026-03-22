@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Admin\Actions\Grid\SendCardBtn;
 use App\Admin\Actions\Grid\RCreateCardBtn;
+use App\Admin\Actions\Grid\MemberEditTypeBtn;
 use App\Admin\Metrics\Examples\ProductOrders;
 use App\Admin\Repositories\Member;
 use Dcat\Admin\Form;
@@ -150,8 +151,8 @@ class MemberController extends AdminController
 
                 $grid->disableDeleteButton();
                 if(!request()->has('wait_pay')) {
-                    $grid->showQuickEditButton();
                     $grid->actions([
+                        new MemberEditTypeBtn(),
                         new RCreateCardBtn(),
                         new SendCardBtn(),
                         // new MemberRenewalBtn()
@@ -343,13 +344,13 @@ class MemberController extends AdminController
             $form->column(6, function (Form $form) {
                 $form->text('chiname')->rules('required');
 
-                $form->text('phone');//->rules("required|unique:members,phone,{$form->model()->id}");
+                $form->text('phone');
 
                 $form->text('company');
 
                 $form->select('job_type')->options(admin_trans('member.options.job_type'));
 
-                $form->select('member_type')->options(admin_trans('member.options.member_type'));
+                $form->select('member_type')->options(admin_trans('member.options.member_type'))->help('會員類型變更請使用列表頁「變更會員類型」按鈕');
 
                 $form->text('recommender');
 
@@ -358,67 +359,43 @@ class MemberController extends AdminController
 
             $form->column(6, function (Form $form) {
 
-                $form->text('engname')->rules('required');;
+                $form->text('engname')->rules('required');
 
-                $form->email('email');//->rules("required|unique:members,email,{$form->model()->id}");;
+                $form->email('email');
 
                 $form->select('company_type')->options(admin_trans('member.options.company_type'));
-
 
                 $form->text('job_name');
 
                 $form->select('status')->options(admin_trans('member.options.status'))->disable();
 
-
                 $form->display('created_at');
 
-                if(  $form->model()->member_type == 3)
-                {
-
-                    $form->text('member_expired_at')->customFormat(function(){
+                if ($form->model()->member_type == 3) {
+                    $form->text('member_expired_at')->customFormat(function () {
                         return '永久生效';
                     });
-
-                }else{
-                    $form->date('member_expired_at','到期時間');
+                } else {
+                    $form->date('member_expired_at', '到期時間');
                 }
-
-
             });
 
             $form->width(8, 4);
 
-            //            $form->ignore(['status']);
-
-
-
-            // 需要判断是否重复
             $form->confirm('確認操作？');
 
             $form->saving(function (Form $form) {
 
-                if($form->member_type == 3)
-                {
+                if ($form->member_type == 3) {
                     $form->member_expired_at = strtotime('2099-12-31');
                 }
-
 
                 $form->deleteInput('status');
             });
 
-            $form->saved(function(Form $form){
-
-                $member_id = $form->model()->id;
-                $member = \app\Models\Member::find($member_id);
-
-
-//                // 需要重新生成會員卡
-//                Bus::chain([
-//                    new MemberCard($member)
-//                ])->dispatch();
-
-
-
+            $form->saved(function (Form $form) {
+                // 普通编辑页保存后不再自动生成会员证/发邮件
+                // 请使用列表页的「变更会员类型」按钮
             });
         });
     }
