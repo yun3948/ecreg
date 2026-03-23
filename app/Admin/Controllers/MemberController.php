@@ -291,7 +291,7 @@ class MemberController extends AdminController
 
             $show->panel()
                 ->tools(function ($tools) {
-                    //                    $tools->disableEdit();
+                    $tools->disableEdit();
                     //                    $tools->disableList();
                     $tools->disableDelete();
                     // 显示快捷编辑按钮

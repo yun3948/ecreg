@@ -8,7 +8,9 @@ use Dcat\Admin\Widgets\Modal;
 
 class MemberEditTypeBtn extends RowAction
 {
-    protected $title = '變更會員類型';
+    protected $title = '會員编辑';
+
+
 
     public function render()
     {
@@ -18,6 +20,6 @@ class MemberEditTypeBtn extends RowAction
             ->lg()
             ->title('會員編輯')
             ->body($form)
-            ->button("<i class='feather icon-edit'></i>&nbsp;" . __('admin.quick_edit') . "&nbsp;&nbsp;");
+            ->button("<a style='display:block;width:100%;text-align:left;cursor:pointer;'><i class='feather icon-edit'></i>&nbsp;" . __('admin.edit') . "</a>");
     }
 }
