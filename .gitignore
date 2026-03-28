@@ -21,3 +21,4 @@ yarn-error.log
 /404.html
 /index.html
 /vendor/*
+.well-known/*
